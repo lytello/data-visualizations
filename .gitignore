@@ -1,5 +1,7 @@
 *.html
 
+.DS_Store
+
 choropleth_files/
 DT_files/
 README_files/
