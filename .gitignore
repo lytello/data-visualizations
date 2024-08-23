@@ -1,3 +1,5 @@
+*.html
+
 choropleth_files/
 DT_files/
 README_files/
