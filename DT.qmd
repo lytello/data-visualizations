@@ -1,0 +1,37 @@
+---
+title: "DT Example: New York City: Elevated Blood Lead Levels 2013-2016 by Borough"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+always_allow_html: true
+---
+
+In this example I create an interactive HTML table using the DT library and data from [New York City](https://data.cityofnewyork.us/Health/Children-Under-6-yrs-with-Elevated-Blood-Lead-Leve/tnry-kwh5) that tested children under 6 years old for elevated blood lead levels (BLL). 
+
+About the data:
+
+All NYC children are required to be tested for lead poisoning at around age 1 and age 2, and to be screened for risk of lead poisoning, and tested if at risk, up until age 6. These data are an indicator of children younger that 6 years of age tested in NYC in a given year with blood lead levels (BLL) of 5 mcg/dL or greater. In 2012, CDC established that a blood lead level of 5 mcg/dL is the reference level for exposure to lead in children. This level is used to identify children who have blood lead levels higher than most children's levels. The reference level is determined by measuring the NHANES blood lead distribution in US children ages 1 to 5 years, and is reviewed every 4 years.
+
+We want to make a table that shows the borough, year, and BLL in one row, while allowing us to order by a column. Before we can make the table we need to prep the data.
+
+```{r, include=F}
+library(tidyverse)
+library(DT)
+```
+
+I previously prepped the data, so we just need to read it in for this example.
+
+```{r}
+bll_nyc_per_1000 <- read_csv("data/bll_nyc_per_1000.csv")
+```
+
+Now we're ready to create the table!
+
+```{r}
+# your code here
+datatable(bll_nyc_per_1000, 
+          rownames = FALSE,
+          colnames = c('Borough', 'Year', 'BLL > 5'),
+          caption = "New York City: Elevated Blood Lead Levels 2013-2016 by Borough")
+```

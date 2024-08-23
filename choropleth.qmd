@@ -1,0 +1,51 @@
+---
+title: "Choropleth Example: Suicide Mortality by State in 2018"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+always_allow_html: true
+---
+
+```{r setup, include=F}
+library(DT)
+library(plotly)
+library(tidyverse)
+```
+
+I wanted to try re-creating a [CDC data visualization on suicide mortality](https://www.cdc.gov/nchs/pressroom/sosmap/suicide-mortality/suicide.htm) by state using R Plotly. This [choropleth map](https://plotly.com/r/choropleth-maps/) is interactive: When you hover over each state you will see the state name in bold, the death rate, and number of deaths. 
+
+We will start with a shell of the map of the USA. 
+
+```{r}
+plot_ly(type="choropleth",
+        locationmode = "USA-states") %>%
+  layout(geo=list(scope="usa")) 
+```
+
+Read in our data. Using static data for 2018.
+```{r, message=F}
+# data pulled from CDC website described above 
+df_suicide <- read_csv("data/Suicide Mortality by State.csv") %>% 
+    filter(YEAR == 2018)
+```
+
+Create our choropleth!
+```{r}
+plot_ly(df_suicide,
+        type="choropleth", 
+        locations = ~STATE,
+        locationmode = "USA-states", 
+        z = ~RATE,
+        colorscale='Viridis',
+        hoverinfo = 'text',
+        text = ~paste('</br><b>', NAME, '</b>', # bold state name
+                      '</br> Death Rate: ', RATE, # line break and add rate
+                      '</br> Deaths: ', DEATHS)) %>% # line break and add rate
+  layout(geo=list(scope="usa"),
+         title = list(text = paste0('Suicide Mortality by State in 2018',
+                                    '<br>', # line break
+                                    '<sup>', # subtitle
+                                    'The number of deaths per 100,000 total population',
+                                    '</sup>')))
+```
